@@ -1,10 +1,10 @@
-import { Typography, Button} from '@mui/material';
-import{ 
-  Dialog, 
-  DialogActions, 
-  DialogContent, 
-  DialogContentText, 
-  DialogTitle 
+import { Button } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,17 +12,17 @@ import { closeDialog } from '../Redux/Reducer/DialogOpenReducer';
 
 const useStyles = makeStyles(
   {
-    root: {
-
+    dialogBox: {
+      width: '300px'
     },
   }
 );
 
 const DialogBox = () => {
-  
+
   const classes = useStyles();
-  const isOpen = useSelector( (state) => state.isDialogOpen.value);
-  console.log(isOpen);
+  const isOpen = useSelector((state) => state.isDialogOpen.value);
+  const message = useSelector((state) => state.dialogMessage.value);
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -30,15 +30,17 @@ const DialogBox = () => {
   }
 
   return (
-    <Dialog 
-      open={isOpen} onClose={handleClose} 
+    <Dialog
+      open={isOpen} onClose={handleClose}
+      fullWidth={true}
+      maxWidth={'sm'}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title"></DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {'message'}
+          {message}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

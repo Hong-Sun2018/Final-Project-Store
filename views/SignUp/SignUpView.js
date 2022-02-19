@@ -7,6 +7,7 @@ import GetUrl from '../../Constants/API';
 import DialogBox from '../../Components/DialogBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { openDialog } from '../../Redux/Reducer/DialogOpenReducer';
+import { setDialogMsg } from '../../Redux/Reducer/DialogMessageReducer'; 
 
 const useStyles = makeStyles(
   {
@@ -54,6 +55,12 @@ const SignUpView = () => {
 
   const handleSignUp = () => {
 
+    if (username.length == 0 || password.length == 0 ) {
+      dispatch(setDialogMsg('Username or password cannot be empty. '));
+      dispatch(openDialog());
+      return;
+    } 
+
     const url = GetUrl('SignUp');
     const reqBody = {
       UserName: username,
@@ -69,9 +76,13 @@ const SignUpView = () => {
         
       })
       .catch( err => {
-        console.log(err);
+        if (err.response.status == '409'){
+          dispatch(setDialogMsg('Username is not available. '))
+        }
+        else {
+          dispatch(setDialogMsg('Unknow error. '))
+        }
         dispatch(openDialog());
-        console.log(isOpen);
       });
   }
 
