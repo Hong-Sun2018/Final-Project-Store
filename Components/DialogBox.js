@@ -6,8 +6,9 @@ import{
   DialogContentText, 
   DialogTitle 
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeDialog } from '../Redux/Reducer/DialogOpenReducer';
 
 const useStyles = makeStyles(
   {
@@ -17,25 +18,27 @@ const useStyles = makeStyles(
   }
 );
 
-const DialogBox = (props) => {
+const DialogBox = () => {
   
   const classes = useStyles();
-  const { open, message } = props;
- 
+  const isOpen = useSelector( (state) => state.isDialogOpen.value);
+  console.log(isOpen);
+  const dispatch = useDispatch();
+
   const handleClose = () => {
-    setIsOpen(false);
+    dispatch(closeDialog());
   }
 
   return (
     <Dialog 
-      open={open} onClose={handleClose} 
+      open={isOpen} onClose={handleClose} 
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title"></DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {countDown}{message}
+          {'message'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

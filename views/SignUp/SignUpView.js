@@ -5,6 +5,8 @@ import axios from 'axios';
 import md5 from 'md5';
 import GetUrl from '../../Constants/API';
 import DialogBox from '../../Components/DialogBox';
+import { useSelector, useDispatch } from 'react-redux';
+import { openDialog } from '../../Redux/Reducer/DialogOpenReducer';
 
 const useStyles = makeStyles(
   {
@@ -39,9 +41,9 @@ const SignUpView = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState(''); 
-  const [dialogMessage, setDialogMessage] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state) => state.isDialogOpen.value);
+  
   const handleChangeUsername = (event) => {
     setUsername(event.target.value);
   }
@@ -68,8 +70,8 @@ const SignUpView = () => {
       })
       .catch( err => {
         console.log(err);
-        setDialogMessage('Sign Up Failed');
-        setDialogOpen(true);
+        dispatch(openDialog());
+        console.log(isOpen);
       });
   }
 
@@ -81,8 +83,6 @@ const SignUpView = () => {
       <Button className={classes.button} sx={{ textTransform: 'none' }} variant={'contained'} onClick={handleSignUp}>
         Sign Up
       </Button>   
-
-      <DialogBox message={dialogMessage} open={dialogOpen} />
     </Box>
   );
 }
