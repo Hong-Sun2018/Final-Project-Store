@@ -42,8 +42,8 @@ const SignUpView = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState(''); 
+  const [confirmPwd, setConfirmPwd] = useState('');
   const dispatch = useDispatch();
-  const isOpen = useSelector((state) => state.isDialogOpen.value);
   
   const handleChangeUsername = (event) => {
     setUsername(event.target.value);
@@ -53,6 +53,17 @@ const SignUpView = () => {
     setPassword(event.target.value)
   }
 
+  const handleChangeConfirmPwd = (event) => {
+    setConfirmPwd(event.target.value);
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode == 13){
+      handleSignUp();
+    }
+  }
+
+  ////////// Sign Up Http ///////////
   const handleSignUp = () => {
 
     if (username.length == 0 || password.length == 0 ) {
@@ -60,6 +71,12 @@ const SignUpView = () => {
       dispatch(openDialog());
       return;
     } 
+
+    if (password != confirmPwd ) {
+      dispatch(setDialogMsg('The password and password confirmation is not same. '));
+      dispatch(openDialog());
+      return;
+    }
 
     const url = GetUrl('SignUp');
     const reqBody = {
@@ -72,8 +89,8 @@ const SignUpView = () => {
 
     axios.post(url, reqBody)
       .then((res) => {
-        console.log(res);
-        
+        dispatch(setDialogMsg('New user has been registed'));
+        dispatch(openDialog());
       })
       .catch( err => {
         if (err.response.status == '409'){
@@ -88,8 +105,9 @@ const SignUpView = () => {
 
   return (
     <Box className={classes.root}> 
-      <TextField className={classes.input} id={'username'} label={'Username'} variant={'filled'} onChange={handleChangeUsername} />
-      <TextField className={classes.input} id={'password'} label={'Password'} variant={'filled'} type={'password'} onChange={handleChangePassword} />
+      <TextField className={classes.input} id={'username'} label={'Username'} variant={'filled'} onChange={handleChangeUsername} size={'small'} />
+      <TextField className={classes.input} id={'password'} label={'Password'} variant={'filled'} type={'password'} onChange={handleChangePassword} size={'small'} />
+      <TextField className={classes.input} id={'confirmPwd'} label={'Confirm Password'} variant={'filled'} type={'password'} onChange={handleChangeConfirmPwd} size={'small'} onKeyDown={handleKeyDown}/>
       
       <Button className={classes.button} sx={{ textTransform: 'none' }} variant={'contained'} onClick={handleSignUp}>
         Sign Up

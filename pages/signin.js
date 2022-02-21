@@ -4,7 +4,7 @@ import SignInView from '../views/SignIn/SignInView';
 const SignIn = () =>{
 
   return (
-    <PageContainer pageTitle={'SignIn'}>
+    <PageContainer pageTitle={'Sign In'}>
       <SignInView />
     </PageContainer>
   );

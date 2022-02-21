@@ -1,7 +1,8 @@
 const HOST_NAME = 'http://localhost:5033';
 
 const API_PATH = {
-  SignUp: '/user/user',
+  SignUp: '/user/signup',
+  SignIn:'/user/signin',
 };
 
 const GetUrl = (key) => {

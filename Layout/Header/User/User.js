@@ -1,5 +1,8 @@
 import { Box, Typography, Link, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { memo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo } from '../../../Redux/Reducer/UserInfoReducer';
 
 const useStyles = makeStyles(
   {
@@ -21,15 +24,26 @@ const SignIn = () => {
   );
 };
 
+const UserMenu = ({username}) => {
+
+  return (
+    <>
+      {username}
+    </>
+  );
+}
+
 const User = () => {
 
   const classes = useStyles();
-
+  const {userName, userID}= useSelector((state) => {return state.userInfo.value});
+  const dispatch = useDispatch();
+  
   return (
     <Box>
-      <SignIn />
+      { userName == '' ? SignIn() :  UserMenu({username: userName})}
     </Box>
-  );
-};
+  )
+}
 
-export default User;
+export default memo(User);
