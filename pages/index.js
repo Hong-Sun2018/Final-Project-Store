@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { memo } from 'react';
 
-export default function Home() {
-  return (
+const Home = () => {
+  return ( 
     <div>
       <Head>
         <title>Create Next App</title>
@@ -18,4 +19,5 @@ export default function Home() {
     </div>
   )
 }
-ba
+
+export default memo(Home);
