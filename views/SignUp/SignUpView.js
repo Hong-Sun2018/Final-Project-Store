@@ -8,6 +8,7 @@ import DialogBox from '../../Components/DialogBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { openDialog } from '../../Redux/Reducer/DialogOpenReducer';
 import { setDialogMsg } from '../../Redux/Reducer/DialogMessageReducer'; 
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles(
   {
@@ -44,6 +45,7 @@ const SignUpView = () => {
   const [password, setPassword] = useState(''); 
   const [confirmPwd, setConfirmPwd] = useState('');
   const dispatch = useDispatch();
+  const router = useRouter();
   
   const handleChangeUsername = (event) => {
     setUsername(event.target.value);
@@ -91,6 +93,7 @@ const SignUpView = () => {
       .then((res) => {
         dispatch(setDialogMsg('New user has been registed'));
         dispatch(openDialog());
+        router.push('/')
       })
       .catch( err => {
         if (err.response.status == '409'){
