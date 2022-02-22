@@ -8,6 +8,7 @@ import axios from 'axios';
 import GetUrl from '../../Constants/API'
 import { setUserInfo } from '../../Redux/Reducer/UserInfoReducer';
 import md5 from 'md5';
+import { useRouter } from 'next/router';
  
 const useStyles = makeStyles(
   {
@@ -46,6 +47,7 @@ const SignInView = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleChangeUsername = (event) => {
     setUsername(event.target.value);
@@ -56,7 +58,7 @@ const SignInView = () => {
   }
 
   const handleKeyDown = (event) => {
-    if (event.KkeyCode == 13){
+    if (event.keyCode == 13){
       handleSignIn();
     }
   }
@@ -81,6 +83,7 @@ const SignInView = () => {
         if(res.data){
           console.log(res.data);
           dispatch(setUserInfo(res.data));
+          router.push('/');
         }
       })
       .catch((error) => {
