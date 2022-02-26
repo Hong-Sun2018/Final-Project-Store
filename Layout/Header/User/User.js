@@ -41,7 +41,7 @@ const User = () => {
   
   return (
     <Box>
-      { userName == '' ? SignIn() :  UserMenu({username: userName})}
+      { userName == '' ? <SignIn /> : <UserMenu username={userName} /> }
     </Box>
   )
 }

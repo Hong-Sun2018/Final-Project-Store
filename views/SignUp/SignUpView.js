@@ -83,7 +83,7 @@ const SignUpView = () => {
     const url = GetUrl('SignUp');
     const reqBody = {
       UserName: username,
-      Password: md5(password)
+      Password: password
     }
 
     console.log(url);
@@ -96,7 +96,7 @@ const SignUpView = () => {
         router.push('/')
       })
       .catch( err => {
-        if (err.response.status == '409'){
+        if (err.response && err.response.status == '409'){
           dispatch(setDialogMsg('Username is not available. '))
         }
         else {
