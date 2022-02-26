@@ -74,7 +74,7 @@ const SignInView = () => {
     const url = GetUrl('SignIn');
     const reqBody = {
       UserName: username,
-      Password: md5(password),
+      Password: password,
     };
 
     // console.log(reqBody);
