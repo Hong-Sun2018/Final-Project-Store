@@ -2,12 +2,10 @@ import { Box, Button, Typography, TextField, Grid, Link } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDialogMsg } from '../../Redux/Reducer/DialogMessageReducer';
-import { openDialog } from '../../Redux/Reducer/DialogOpenReducer';
+import { setDialogMsg } from '../../Redux/Reducer/DialogReducer';
 import axios from 'axios';
 import GetUrl from '../../Constants/API'
 import { setUserInfo } from '../../Redux/Reducer/UserInfoReducer';
-import md5 from 'md5';
 import { useRouter } from 'next/router';
  
 const useStyles = makeStyles(
@@ -67,7 +65,6 @@ const SignInView = () => {
     
     if (username.length == 0 || password.length == 0){
       dispatch(setDialogMsg('Username or password cannot be empty. '));
-      dispatch(openDialog());
       return;
     }
 
@@ -87,14 +84,15 @@ const SignInView = () => {
         }
       })
       .catch((error) => {
-        if (error.response.status == 401){
+        if (!error.response){
+          dispatch(setDialogMsg('Server not responding, check internet connection.'));
+        }
+        else if (error.response.status == 401){
           dispatch(setDialogMsg('Incorrect username or password.'));
-          dispatch(openDialog());
           console.log(error.response);
         }
         else {
           dispatch(setDialogMsg('Unknow error.'));
-          dispatch(openDialog());
         }
       })
   }

@@ -2,12 +2,9 @@ import { Grid, Box, Button, TextField, Link } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState, memo } from 'react';
 import axios from 'axios';
-import md5 from 'md5';
 import GetUrl from '../../Constants/API';
-import DialogBox from '../../Components/DialogBox';
 import { useSelector, useDispatch } from 'react-redux';
-import { openDialog } from '../../Redux/Reducer/DialogOpenReducer';
-import { setDialogMsg } from '../../Redux/Reducer/DialogMessageReducer'; 
+import { setDialogMsg } from '../../Redux/Reducer/DialogReducer'; 
 import { useRouter } from 'next/router';
 
 const useStyles = makeStyles(
@@ -70,13 +67,11 @@ const SignUpView = () => {
 
     if (username.length == 0 || password.length == 0 ) {
       dispatch(setDialogMsg('Username or password cannot be empty. '));
-      dispatch(openDialog());
       return;
     } 
 
     if (password != confirmPwd ) {
       dispatch(setDialogMsg('The password and password confirmation is not same. '));
-      dispatch(openDialog());
       return;
     }
 
@@ -92,7 +87,6 @@ const SignUpView = () => {
     axios.post(url, reqBody)
       .then((res) => {
         dispatch(setDialogMsg('New user has been registed'));
-        dispatch(openDialog());
         router.push('/')
       })
       .catch( err => {
@@ -102,7 +96,6 @@ const SignUpView = () => {
         else {
           dispatch(setDialogMsg('Unknow error. '))
         }
-        dispatch(openDialog());
       });
   }
 
