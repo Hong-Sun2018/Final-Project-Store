@@ -12,7 +12,7 @@ const LoginProvider = ({children}) => {
     const url = API('TokenLogin');
     // console.log(url);
     axios.get(url, {withCredentials: true}).then((res) => {
-      if (res){
+      if (res && res.data){
         dispatch(setUserInfo(res.data));
       }
     }).catch( err => {
