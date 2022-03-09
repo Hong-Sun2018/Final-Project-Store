@@ -6,7 +6,10 @@ const API_PATH = {
   SignOut: '/user/signout',
   TokenLogin: '/user/token-login',
   Product: '/product',
-  GetCategories: '/category'
+  GetCategories: '/category',
+  GetCategoryPath: '/category/get-cate-path',
+  Cart: '/cart',
+  Order: '/order',
 };
 
 const API = (key) => {

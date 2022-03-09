@@ -8,6 +8,7 @@ import { setDialogMsg } from '../../../Redux/Reducer/DialogReducer';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { memo, useEffect, useState } from 'react';
+import { Pool } from '@mui/icons-material';
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +47,7 @@ const useStyles = makeStyles({
     lineHeight: '90%'
   },
   iconBtn: {
-    width:'10px',
+    width: '10px',
     height: '10px'
   }
 });
@@ -57,63 +58,76 @@ const ProductCard = ({ product }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const imgSrc = `data:${product.fileType1};base64,${product.file1}`;
-  const [disableCart, setDisableCart] = useState(true);
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState(product.productAmount);
+  const [tempQuantity, setTempQuantity] = useState(product.productAmount);
 
   useEffect(() => {
-    if (product.productStock > 0){
-      setDisableCart(false);
-      setQuantity(1);
+    if (product.productAmount <= product.productStock) {
+      setQuantity(product.productAmount);
+    }
+    else if (product.productAmount > product.productStock) {
+      setQuantity(product.productStock);
     }
   }, []);
 
-  const clickEdit = () => {
-    router.push(`/edit-product/${product.productID}`)
-  }
-
-  const clickViewDetail = () => {
-    router.push(`/product-detail/${product.productID}`);
+  const clickSaveChange = () => {
+    if (tempQuantity > 0 && tempQuantity <= product.productStock) {
+      const url = API('Cart');
+      const data = {
+        id: product.id,
+        productID: product.productID,
+        userID: product.userID,
+        productAmount: tempQuantity,
+      };
+      axios.put(url, data, { withCredentials: true }).then(res => {
+        if (res) {
+          setQuantity(tempQuantity);
+          router.reload();
+        }
+      }).catch(error => {
+        dispatch(setDialogMsg('Unknown error.'))
+      })
+    }
+    else {
+      dispatch(setDialogMsg('Ivalid product quantity.'));
+      setTempQuantity(quantity);
+    }
   }
 
   const increment = () => {
-    if (quantity < product.productStock){
-      setQuantity(quantity + 1);
-    } 
+    if (tempQuantity < product.productStock) {
+      setTempQuantity(tempQuantity + 1);
+    }
   }
 
   const decrement = () => {
-    if (quantity > 1){
-      setQuantity(quantity - 1);
+    if (tempQuantity > 1) {
+      setTempQuantity(tempQuantity - 1);
     }
   }
 
-  const changeQuantity = (event) => {
-    if(event.target.value > 0 && event.target.value <= product.productStock){
-      setQuantity(event.target.value);
-    }
+  const changeTempQuantity = (event) => {
+    setTempQuantity(event.target.value);
   }
 
-  const clickAddToCart = () => {
-    const url = API('Cart');
+  const clickDelete = () => {
+    const url = `${API('Cart')}/${product.id}`;
     const data = {
       UserID: 0,
       ProductID: product.productID,
       ProductAmount: quantity,
     };
-    axios.post(url, data, {withCredentials: true}).then(res => {
-      dispatch(setDialogMsg('Product added to cart.'));
+    axios.delete(url, { withCredentials: true }).then(res => {
+      dispatch(setDialogMsg(`Product deleted. ID: ${product.id}`));
     }).catch(err => {
-      // console.log(err.response);
-      if (err.response.status == 409){
-        dispatch(setDialogMsg('Product exists in shopping cart.'))
-      }
+      console.log(err);
     });
   }
 
   return (
     <Box className={classes.root} >
       <Grid container alignItems={'center'} justifyContent={'center'} spacing={4}>
-        <Grid item md={3} sm={12} xs={12}>
+        <Grid item md={2.5} sm={12} xs={12}>
           <Box className={classes.imgContainer} >
             <Box className={classes.image} component={'img'} src={imgSrc} />
           </Box>
@@ -121,18 +135,30 @@ const ProductCard = ({ product }) => {
         <Grid item md={3} sm={12} xs={12}>
           <Typography variant={'p'} md={{ textAlign: 'left' }} sm={{ textAlign: 'center' }}>{product.productName}</Typography>
         </Grid>
-        <Grid item md={1.5} sm={12} xs={12}>
+        <Grid item md={1.3} sm={12} xs={12}>
           <Typography color={'#cccccc'}>Price:</Typography>
           <Typography textAlign={'center'}>{product.productPrice}</Typography>
         </Grid>
-        <Grid item md={1.5} sm={12} xs={12}>
+        <Grid item md={1.2} sm={12} xs={12}>
           <Typography color={'#cccccc'}>Stock:</Typography>
           <Typography textAlign={'center'} >{product.productStock}</Typography>
         </Grid>
-        <Grid item md={3} sm={12} xs={12} textAlign={'center'}>
+        <Grid item md={1.5} sm={12} xs={12}>
+          <Typography color={'#cccccc'}>Quantity:</Typography>
+          <Typography textAlign={'center'}>
+            <IconButton className={classes.iconBtn} onClick={decrement}>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+            <input className={classes.input} value={tempQuantity} onChange={changeTempQuantity} />
+            <IconButton className={classes.iconBtn} onClick={increment} >
+              <KeyboardArrowUpIcon />
+            </IconButton>
+          </Typography>
+        </Grid>
+        <Grid item md={2.5} sm={12} xs={12} textAlign={'center'}>
           <Box className={classes.btnContainer}>
-            <Button className={classes.btn} onClick={clickViewDetail} variant={'contained'} size={'small'} >View Detail</Button>
-            <Button className={classes.btn} onClick={clickAddToCart} variant={'outlined'} size={'small'} disabled={disableCart} >Add to Cart</Button>
+            <Button className={classes.btn} onClick={clickSaveChange} variant={'contained'} size={'small'} >Save Change</Button>
+            <Button className={classes.btn} onClick={clickDelete} variant={'outlined'} size={'small'} color={'error'} >Delete</Button>
           </Box>
         </Grid>
       </Grid>

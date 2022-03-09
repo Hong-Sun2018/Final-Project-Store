@@ -9,6 +9,7 @@ import ProductCard from './ProductCard/ProductCard';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -94,15 +95,6 @@ const ProductList = () => {
     setKeyWords(event.target.value);
   }
 
-  
-  function getKeyWords() {
-    if (!keyWords || keyWords.length == 0) {
-      return 'UndefinedKeyWord';
-    }
-    else {
-      return keyWords;
-    }
-  }
   const clickSearch = () => {
     getProducts();
   }
@@ -134,8 +126,23 @@ const ProductList = () => {
     return retVal;
   }
 
+  function getKeyWords() {
+    if (!keyWords || keyWords.length == 0) {
+      return 'UndefinedKeyWord';
+    }
+    else {
+      const keyWordsArr = keyWords.split(' ');
+      const retStr = '';
+      for (const word of keyWordsArr){
+        retStr = `${retStr}_${word}`
+      }
+      return retStr;
+    }
+  }
+
   const getProducts = () => {
     const url = `${API('Product')}/${getCategoryID()}/${getKeyWords()}`;
+    
     // console.log(url);
     axios.get(url).then((res) => {
       // console.log(res.data)
@@ -149,7 +156,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts()
-  }, [category1, category2, category3, keyWords, dialogMsg])
+  }, [dialogMsg])
 
 /////////////////////////////////////////////////// Get Category List ////////////////////////////////////////////////////////////////
   
