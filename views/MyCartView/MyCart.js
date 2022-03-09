@@ -54,7 +54,7 @@ const MyCart = () => {
     axios.get(url, { withCredentials: true }).then(res => {
       if (res) {
         setCartProdList(res.data);
-        console.log(res.data);
+        // console.log(res.data);
         let temp = 0;
         for (const item of res.data){
           temp = temp + item.productPrice * item.productAmount;
