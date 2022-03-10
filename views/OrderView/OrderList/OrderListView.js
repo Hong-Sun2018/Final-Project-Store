@@ -23,6 +23,7 @@ const OrderListView = () => {
     axios.get(url, {withCredentials: true}).then(res => {
       if (res && res.data){
         setOrderList(res.data);
+        console.log(res.data);
       }
     }).catch(err => {
       console.log(err);
