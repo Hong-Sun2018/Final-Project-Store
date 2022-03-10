@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import PageContainer from "../../Components/PageContainer";
-import ProductDetailView from "../../Views/ProductDetail/ProductDetailView";
+import ProductDetailView from "../../views/ProductDetail/ProductDetailView";
 
 const ProductDetail = () => {
 
