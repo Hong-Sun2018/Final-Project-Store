@@ -86,9 +86,9 @@ const ProductDetailView = ({ productID }) => {
         setProdStock(res.data.productStock);
         setProdCateID(res.data.categoryID);
         setDisableCart(res.data.productStock <= 0);
-        setImg1(`data:${res.data.fileType1};base64,${res.data.file1}`);
-        setImg2(`data:${res.data.fileType2};base64,${res.data.file2}`);
-        setImg3(`data:${res.data.fileType3};base64,${res.data.file3}`);
+        setImg1(res.data.file1);
+        setImg2(res.data.file2);
+        setImg3(res.data.file3);
       }
     }).catch(err => {
       console.log(err);

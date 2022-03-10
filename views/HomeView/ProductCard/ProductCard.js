@@ -56,7 +56,7 @@ const ProductCard = ({ product }) => {
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
-  const imgSrc = `data:${product.fileType1};base64,${product.file1}`;
+  const imgSrc = product.file1;
   const [disableCart, setDisableCart] = useState(true);
   const [quantity, setQuantity] = useState('');
 

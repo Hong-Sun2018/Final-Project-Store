@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
-  const imgSrc = `data:${product.fileType1};base64,${product.file1}`;
+  const imgSrc = product.file1;
   const [quantity, setQuantity] = useState(product.productAmount);
   const [tempQuantity, setTempQuantity] = useState(product.productAmount);
 
