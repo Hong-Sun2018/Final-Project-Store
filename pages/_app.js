@@ -1,17 +1,20 @@
 import Layout from "../Layout/Layout";
-import { Provider } from 'react-redux';
+import { Provider as StoreProvider } from 'react-redux';
 import store from "../Redux/Store";
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
+import LoginProvider from '../Components/LoginProvider';
 
 const MyApp = ({ Component, pageProps }) => {
   return (
-    <Provider store={store}>
-      <Layout>
-        <Box sx={{boxShadow: 3, marginBottom: '4px'}}>
-          <Component {...pageProps} />
-        </Box>
-      </Layout>
-    </Provider>
+    <StoreProvider store={store}>
+      <LoginProvider>
+        <Layout>
+          <Box sx={{ boxShadow: 3, marginBottom: '4px' }}>
+            <Component {...pageProps} />
+          </Box>
+        </Layout>
+      </LoginProvider>
+    </StoreProvider>
   );
 }
 

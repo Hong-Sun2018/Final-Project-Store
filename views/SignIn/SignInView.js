@@ -75,7 +75,7 @@ const SignInView = () => {
     };
 
     // console.log(reqBody);
-    axios.post(url, reqBody)
+    axios.post(url, reqBody, {withCredentials: true})
       .then((res) => {
         if(res.data){
           console.log(res.data);

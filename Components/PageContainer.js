@@ -5,10 +5,11 @@ const useStyles = makeStyles(
   {
     root: {
       width: '100%',
+      minHeight: '850px',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       paddingTop: '150px',
       paddingBottom: '100px'
     },
